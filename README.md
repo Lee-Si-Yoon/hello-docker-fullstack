@@ -37,6 +37,7 @@ CRA + typescript
 ## TODOs
 
 1. convert to [private repo image](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/single-container-docker-configuration.html#single-container-docker-configuration-dc)
+2. use [docker login action](https://github.com/docker/login-action/tree/v3/) to secure credentials
 
 ## Commit rules
 
