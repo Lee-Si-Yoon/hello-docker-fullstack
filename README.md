@@ -1,5 +1,12 @@
 # hello-docker-fullstack
 
+## Commands
+
+```sh
+# DEV
+docker-compose -f docker-compose.dev.yaml up --build
+```
+
 ## Stack
 
 ### FE
