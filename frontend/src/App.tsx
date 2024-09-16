@@ -22,7 +22,7 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">hi</header>
+      <header className="App-header">hello world</header>
     </div>
   );
 }
