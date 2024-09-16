@@ -37,3 +37,7 @@ CRA + typescript
 ## TODOs
 
 1. convert to [private repo image](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/single-container-docker-configuration.html#single-container-docker-configuration-dc)
+
+## Commit rules
+
+[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)

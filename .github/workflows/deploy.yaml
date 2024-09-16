@@ -1,0 +1,33 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - run: docker build -t siyoonlee/hello-docker-frontend ./frontend
+      - run: docker build -t siyoonlee/hello-docker-nginx ./nginx
+      - run: docker build -t siyoonlee/hello-docker-backend ./backend
+
+      - run: docker push siyoonlee/hello-docker-frontend
+      - run: docker push siyoonlee/hello-docker-nginx
+      - run: docker push siyoonlee/hello-docker-backend
+
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
+
+      - uses: einaregilsson/beanstalk-deploy@v22
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          region: us-east-1
+          application_name: hello-docker
+          environment_name: Hello-docker-env
+          existing_bucket_name: elasticbeanstalk-us-east-1-061039777462
+          version_label: ${{ github.sha }}
+          deployment_package: deploy.zip
