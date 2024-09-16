@@ -19,4 +19,4 @@ services:
     volumes:
       - /app/node_modules
       - ./backend:/app
-    mem_limit: 128m
+    mem_limit: 256m
