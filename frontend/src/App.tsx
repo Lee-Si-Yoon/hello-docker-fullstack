@@ -12,7 +12,15 @@ function App() {
       }),
   });
 
-  if (isPending) {
+  const { isPending: pythonPending } = useQuery({
+    queryKey: ["python"],
+    queryFn: () =>
+      fetch("/api-python/hi").then(async (res) => {
+        return "python good";
+      }),
+  });
+
+  if (isPending || pythonPending) {
     return <span>Loading...</span>;
   }
 

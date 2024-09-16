@@ -25,3 +25,12 @@ services:
     volumes:
       - /app/node_modules
       - ./backend:/app
+
+  backend-python:
+    build:
+      context: ./backend-python
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend-python:/code
+    ports:
+      - "8000:8000"
