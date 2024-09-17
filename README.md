@@ -7,25 +7,27 @@
 docker-compose -f docker-compose.dev.yaml up --build
 
 # PROD
-docker build -t siyoonlee/hello-docker-frontend ./frontend
+docker build -t siyoonlee/hello-docker-web ./web
 docker build -t siyoonlee/hello-docker-nginx ./nginx
-docker build -t siyoonlee/hello-docker-backend ./backend
+docker build -t siyoonlee/hello-docker-python ./python
+docker build -t siyoonlee/hello-docker-nodejs ./nodejs
 
 docker-compose up --build
 
 # to browse - in different shell
-docker-compose exec frontend sh
+docker-compose exec nginx sh
 ```
 
 ## Stack
 
 ### FE
 
-CRA + typescript
+1. CRA + typescript: PORT 3000
 
 ### BE
 
-1. express + typescript
+1. express + typescript: PORT 5000
+2. FastAPI: PORT 8000
 
 ## Goals
 

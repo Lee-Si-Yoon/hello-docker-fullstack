@@ -1,13 +1,15 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 
-import "./App.css";
-
 function App() {
-  const { isPending, isError, error } = useQuery({
+  const {
+    isPending: nodejsPending,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["hi"],
     queryFn: () =>
-      fetch("/api/hi").then(async (res) => {
+      fetch("/nodejs/hi").then(async (res) => {
         return "good";
       }),
   });
@@ -15,12 +17,12 @@ function App() {
   const { isPending: pythonPending } = useQuery({
     queryKey: ["python"],
     queryFn: () =>
-      fetch("/api-python/hi").then(async (res) => {
+      fetch("/python/hi").then(async (res) => {
         return "python good";
       }),
   });
 
-  if (isPending || pythonPending) {
+  if (nodejsPending || pythonPending) {
     return <span>Loading...</span>;
   }
 
@@ -28,11 +30,7 @@ function App() {
     return <span>Error: {error.message}</span>;
   }
 
-  return (
-    <div className="App">
-      <header className="App-header">hello world</header>
-    </div>
-  );
+  return <header>hello world</header>;
 }
 
 export default App;
