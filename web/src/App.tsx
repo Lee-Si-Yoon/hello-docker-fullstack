@@ -2,7 +2,9 @@ import React from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 function App() {
-  const [nodeJsCode, setNodeJsCode] = React.useState(`console.log("hello")`);
+  const [nodeJsCode, setNodeJsCode] = React.useState(
+    `const a = "hello";\nlog(a + " world");`
+  );
   const [pythonCode, setPythonCode] = React.useState(`print("hello")`);
 
   const {
@@ -76,6 +78,8 @@ function App() {
             run
           </button>
         </form>
+        <i>{`log(arg:any): { console: string[], stats: ivm.HeapStatistics }`}</i>
+        <div>{JSON.stringify(nodeJsRunReturns, null, 2)}</div>
       </section>
 
       <section style={{ flex: 1 }}>

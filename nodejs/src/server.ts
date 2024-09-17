@@ -11,38 +11,35 @@ app.get("/nodejs/hi", function (req, res) {
 
 app.post("/nodejs/run", async function (req, res) {
   const { code } = req.body;
-
   let consoleOutput: string[] = [];
-
-  const logCallback = function (...args: any[]) {
-    consoleOutput.push(args.join(" "));
-  };
 
   try {
     const isolate = new ivm.Isolate({ memoryLimit: 128 });
     const context = isolate.createContextSync();
-    const jail = context.global;
 
+    const jail = context.global;
     jail.setSync("global", jail.derefInto());
     jail.setSync("log", function (...args: any) {
-      console.log(...args);
+      consoleOutput.push(args.join(" "));
     });
 
-    const script = await isolate.compileScriptSync(`
+    const script = `
       (function() {
         ${code}
       })();
-    `);
+    `;
 
-    await script.run(context);
+    const compiledScript = await isolate.compileScript(script);
+    await compiledScript.run(context);
+
+    const stats = await isolate.getHeapStatistics();
 
     res.status(200).send({
       console: consoleOutput,
+      stats,
     });
   } catch (error) {
-    res
-      .status(500)
-      .send({ error: (error as Error).message, console: consoleOutput });
+    res.status(500).send({ error: (error as Error).message });
   }
 });
 
