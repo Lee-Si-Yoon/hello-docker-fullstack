@@ -1,7 +1,12 @@
 # Backend-FastAPI
 
-install
-
 ```sh
-pip install -r requirements.txt
+poetry install
+
+# DEV
+poetry run uvicorn app.main:app --host "0.0.0.0" --port 8000
 ```
+
+## Refs
+
+- [poetry installation](https://python-poetry.org/docs/#installation)
