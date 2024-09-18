@@ -5,7 +5,9 @@ function App() {
   const [nodeJsCode, setNodeJsCode] = React.useState(
     `const a = "hello";\nlog(a + " world");`
   );
-  const [pythonCode, setPythonCode] = React.useState(`print("hello")`);
+  const [pythonCode, setPythonCode] = React.useState(
+    `a = "hello"\nprint(f"{a} world")`
+  );
 
   const {
     isPending: nodejsPending,
@@ -45,6 +47,24 @@ function App() {
       }),
   });
 
+  const {
+    mutate: runPythonCode,
+    data: pythonRunReturns,
+    isPending: pythonRunPending,
+  } = useMutation({
+    mutationFn: (code: string) => {
+      return fetch("/python/run", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code }),
+      }).then(async (res) => {
+        return res.json();
+      });
+    },
+  });
+
   if (nodejsPending || pythonPending) {
     return <span>Loading...</span>;
   }
@@ -79,7 +99,7 @@ function App() {
           </button>
         </form>
         <i>{`log(arg:any): { console: string[], stats: ivm.HeapStatistics }`}</i>
-        <div>{JSON.stringify(nodeJsRunReturns, null, 2)}</div>
+        <article>{JSON.stringify(nodeJsRunReturns, null, 2)}</article>
       </section>
 
       <section style={{ flex: 1 }}>
@@ -87,6 +107,7 @@ function App() {
           id="python"
           onSubmit={(e) => {
             e.preventDefault();
+            runPythonCode(pythonCode);
           }}
           style={{ display: "flex", flexDirection: "column" }}
         >
@@ -100,8 +121,12 @@ function App() {
             wrap="hard"
             rows={5}
           />
-          <button type="submit">run</button>
+          <button type="submit" disabled={pythonRunPending}>
+            run
+          </button>
         </form>
+        <i>{`print(arg:any): { ok: boolean, output: string, execution_time: number }`}</i>
+        <article>{JSON.stringify(pythonRunReturns)}</article>
       </section>
     </main>
   );
